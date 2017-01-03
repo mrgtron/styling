@@ -1,0 +1,38 @@
+﻿<!-- 
+SharePoint Instant Script reference by Ben Tedder, Mike Merrit and Kilian Valkhof
+repurposed  for SP 2013 webaprts by Kamel Takla 12/30/2016
+
+-->
+<script src="/SiteAssets/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript">
+    jQuery.expr[':'].Contains = function(a, i, m) {
+        return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+    };
+
+    jQuery.noConflict()(function($) {
+
+
+
+        $(document).ready(function() {
+            var WebaprtID = $("#WebPartWPQ3");
+
+
+            $(WebaprtID).closest('.ms-webpart-titleText').append('<div style="display:block; float:right;"><input class="search" value="Search" style="padding: 4px;" type="text" /></div>');
+
+            $("input.search").change(function() {
+                var txt = $("input.search").val();
+                if (txt) {
+
+                    $(WebaprtID).find("a:not(:Contains(" + txt + "))").parent(".link-item").hide;
+                    $(WebaprtID).find("a:Contains(" + txt + ")").parent(".link-item").show();
+                } else {
+                    //in case blank text. 
+                    $(WebaprtID).find("a:Contains(" + txt + ")").parent(".link-item").show();
+                }
+            }).keyup(function() {
+                $(this).change();
+            });
+        });
+    });
+</script>
